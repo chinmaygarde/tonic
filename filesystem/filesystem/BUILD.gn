@@ -26,8 +26,6 @@ source_set("filesystem") {
     "inttypes.h",
     "path.h",
     "portable_unistd.h",
-    "scoped_temp_dir.cc",
-    "scoped_temp_dir.h",
     "symlink.h",
   ]
 

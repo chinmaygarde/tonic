@@ -12,22 +12,6 @@
 
 namespace filesystem {
 
-// Writes the given data to the file at the given path. Returns true if the data
-// was successfully written, otherwise returns false.
-bool WriteFile(const std::string& path, const char* data, ssize_t size);
-
-// Writes the given data a temporary file under |temp_root| and then moves the
-// temporary file to |path|, ensuring write atomicity. Returns true if the data
-// was successfully written, otherwise returns false.
-//
-// Note that |path| and |temp_root| must be within the same filesystem for the
-// move to work. For example, it will not work to use |path| under /data and
-// |temp_root| under /tmp.
-bool WriteFileInTwoPhases(const std::string& path,
-                          const char* data,
-                          size_t data_len,
-                          const std::string& temp_root);
-
 // Reads the contents of the file at the given path or file descriptor and
 // stores the data in result. Returns true if the file was read successfully,
 // otherwise returns false. If this function returns false, |result| will be

@@ -9,17 +9,14 @@
 #include <sys/stat.h>
 
 #if defined(OS_WIN)
-#define FILE_CREATE_MODE _S_IREAD | _S_IWRITE
 #define BINARY_MODE _O_BINARY
 #else
-#define FILE_CREATE_MODE 0666
 #define BINARY_MODE 0
 #endif
 
 #include "filesystem/eintr_wrapper.h"
 #include "filesystem/file_descriptor.h"
 #include "filesystem/portable_unistd.h"
-#include "filesystem/scoped_temp_dir.h"
 
 namespace filesystem {
 namespace {
@@ -54,35 +51,6 @@ bool ReadFileDescriptor(int fd, T* result) {
 }
 
 }  // namespace
-
-bool WriteFile(const std::string& path, const char* data, ssize_t size) {
-  Descriptor fd(HANDLE_EINTR(creat(path.c_str(), FILE_CREATE_MODE)));
-  if (!fd.is_valid())
-    return false;
-  return WriteFileDescriptor(fd.get(), data, size);
-}
-
-bool WriteFileInTwoPhases(const std::string& path,
-                          const char* data,
-                          size_t data_len,
-                          const std::string& temp_root) {
-  ScopedTempDir temp_dir(temp_root);
-
-  std::string temp_file_path;
-  if (!temp_dir.NewTempFile(&temp_file_path)) {
-    return false;
-  }
-
-  if (!WriteFile(temp_file_path, data, data_len)) {
-    return false;
-  }
-
-  if (rename(temp_file_path.c_str(), path.c_str()) != 0) {
-    return false;
-  }
-
-  return true;
-}
 
 bool ReadFileToString(const std::string& path, std::string* result) {
   Descriptor fd(open(path.c_str(), O_RDONLY));
