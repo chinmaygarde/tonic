@@ -50,30 +50,6 @@ bool ReadFileDescriptor(int fd, T* result) {
   return true;
 }
 
-}  // namespace
-
-bool ReadFileToString(const std::string& path, std::string* result) {
-  Descriptor fd(open(path.c_str(), O_RDONLY));
-  return ReadFileDescriptor(fd.get(), result);
-}
-
-bool ReadFileDescriptorToString(int fd, std::string* result) {
-  return ReadFileDescriptor(fd, result);
-}
-
-bool ReadFileToVector(const std::string& path, std::vector<uint8_t>* result) {
-  Descriptor fd(open(path.c_str(), O_RDONLY | BINARY_MODE));
-  return ReadFileDescriptor(fd.get(), result);
-}
-
-std::pair<uint8_t*, intptr_t> ReadFileToBytes(const std::string& path) {
-  std::pair<uint8_t*, intptr_t> failure_pair{nullptr, -1};
-  Descriptor fd(open(path.c_str(), O_RDONLY | BINARY_MODE));
-  if (!fd.is_valid())
-    return failure_pair;
-  return ReadFileDescriptorToBytes(fd.get());
-}
-
 std::pair<uint8_t*, intptr_t> ReadFileDescriptorToBytes(int fd) {
   std::pair<uint8_t*, intptr_t> failure_pair{nullptr, -1};
   struct stat st;
@@ -94,6 +70,21 @@ std::pair<uint8_t*, intptr_t> ReadFileDescriptorToBytes(int fd) {
     bytes_left -= bytes_read;
   }
   return std::pair<uint8_t*, intptr_t>(ptr, file_size);
+}
+
+}  // namespace
+
+bool ReadFileToString(const std::string& path, std::string* result) {
+  Descriptor fd(open(path.c_str(), O_RDONLY));
+  return ReadFileDescriptor(fd.get(), result);
+}
+
+std::pair<uint8_t*, intptr_t> ReadFileToBytes(const std::string& path) {
+  std::pair<uint8_t*, intptr_t> failure_pair{nullptr, -1};
+  Descriptor fd(open(path.c_str(), O_RDONLY | BINARY_MODE));
+  if (!fd.is_valid())
+    return failure_pair;
+  return ReadFileDescriptorToBytes(fd.get());
 }
 
 bool IsFile(const std::string& path) {
