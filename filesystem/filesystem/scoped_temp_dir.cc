@@ -4,7 +4,7 @@
 
 #include "filesystem/scoped_temp_dir.h"
 
-#include "filesystem/build_config.h"
+#include "tonic/common/build_config.h"
 
 // mkdtemp - required include file
 #if defined(OS_MACOSX)

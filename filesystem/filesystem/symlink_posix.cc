@@ -8,8 +8,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "filesystem/build_config.h"
 #include "filesystem/path.h"
+#include "tonic/common/build_config.h"
 
 namespace filesystem {
 
