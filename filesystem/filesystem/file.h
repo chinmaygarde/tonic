@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+#include "filesystem/inttypes.h"
+
 namespace filesystem {
 
 // Writes the given data to the file at the given path. Returns true if the data

@@ -6,15 +6,9 @@
 #define FILESYSTEM_FILE_DESCRIPTOR_H_
 
 #include "filesystem/eintr_wrapper.h"
+#include "filesystem/inttypes.h"
 #include "filesystem/portable_unistd.h"
 #include "tonic/common/build_config.h"
-
-#include <stdint.h>
-
-#if defined(OS_WIN)
-#include <BaseTsd.h>
-typedef SSIZE_T ssize_t;
-#endif
 
 namespace filesystem {
 
