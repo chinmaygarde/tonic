@@ -22,8 +22,8 @@ std::string GetAbsoluteFilePath(const std::string& path) {
     return std::string();
   }
   char buffer[MAX_PATH];
-  DWORD ret = GetFinalPathNameByHandleA(file.get(), buffer, MAX_PATH,
-                                        FILE_NAME_NORMALIZED);
+  DWORD ret =
+      GetFinalPathNameByHandleA(file, buffer, MAX_PATH, FILE_NAME_NORMALIZED);
   if (ret == 0 || ret > MAX_PATH) {
     CloseHandle(file);
     return std::string();
