@@ -61,15 +61,6 @@ bool ReadFileDescriptorToString(int fd, std::string* result) {
   return ReadFileDescriptor(fd, result);
 }
 
-#if defined(OS_LINUX) || defined(OS_FUCHSIA)
-bool ReadFileToStringAt(int dirfd,
-                        const std::string& path,
-                        std::string* result) {
-  Descriptor fd(openat(dirfd, path.c_str(), O_RDONLY));
-  return ReadFileDescriptor(fd.get(), result);
-}
-#endif
-
 bool ReadFileToVector(const std::string& path, std::vector<uint8_t>* result) {
   Descriptor fd(open(path.c_str(), O_RDONLY | BINARY_MODE));
   return ReadFileDescriptor(fd.get(), result);
@@ -111,15 +102,6 @@ bool IsFile(const std::string& path) {
     return false;
   return S_ISREG(buf.st_mode);
 }
-
-#if defined(OS_LINUX) || defined(OS_FUCHSIA)
-bool IsFileAt(int dirfd, const std::string& path) {
-  struct stat buf;
-  if (fstatat(dirfd, path.c_str(), &buf, 0 /* flags */) != 0)
-    return false;
-  return S_ISREG(buf.st_mode);
-}
-#endif
 
 bool GetFileSize(const std::string& path, uint64_t* size) {
   struct stat stat_buffer;
