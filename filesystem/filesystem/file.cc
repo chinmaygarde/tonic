@@ -15,7 +15,6 @@
 #endif
 
 #include "filesystem/eintr_wrapper.h"
-#include "filesystem/file_descriptor.h"
 #include "filesystem/portable_unistd.h"
 
 namespace filesystem {

@@ -8,9 +8,35 @@
 #include <string>
 #include <vector>
 
+#include "filesystem/eintr_wrapper.h"
 #include "filesystem/inttypes.h"
+#include "filesystem/portable_unistd.h"
 
 namespace filesystem {
+
+class Descriptor {
+ public:
+  using Handle = int;
+
+  Descriptor(Handle handle) : handle_(handle) {}
+
+  ~Descriptor() {
+    if (is_valid()) {
+      IGNORE_EINTR(::close(handle_));
+    }
+  }
+
+  bool is_valid() { return handle_ >= 0; }
+
+  Handle get() { return handle_; }
+
+ private:
+  Handle handle_ = -1;
+
+  Descriptor(Descriptor&) = delete;
+
+  void operator=(const Descriptor&) = delete;
+};
 
 // Reads the contents of the file at the given path or file descriptor and
 // stores the data in result. Returns true if the file was read successfully,
