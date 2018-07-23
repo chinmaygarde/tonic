@@ -8,16 +8,6 @@
 
 namespace filesystem {
 
-bool WriteFileDescriptor(int fd, const char* data, ssize_t size) {
-  ssize_t total = 0;
-  for (ssize_t partial = 0; total < size; total += partial) {
-    partial = HANDLE_EINTR(write(fd, data + total, size - total));
-    if (partial < 0)
-      return false;
-  }
-  return true;
-}
-
 ssize_t ReadFileDescriptor(int fd, char* data, ssize_t max_size) {
   ssize_t total = 0;
   for (ssize_t partial = 0; total < max_size; total += partial) {

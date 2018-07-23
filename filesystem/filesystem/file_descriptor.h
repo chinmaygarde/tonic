@@ -36,8 +36,6 @@ class Descriptor {
   void operator=(const Descriptor&) = delete;
 };
 
-bool WriteFileDescriptor(int fd, const char* data, ssize_t size);
-
 ssize_t ReadFileDescriptor(int fd, char* data, ssize_t max_size);
 
 }  // namespace filesystem
