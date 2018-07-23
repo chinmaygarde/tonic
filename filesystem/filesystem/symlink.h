@@ -9,11 +9,6 @@
 
 namespace filesystem {
 
-// If |path| is a symbolic link, this function will return true and set
-// |resolved_path| to the path pointed to by the symbolic link. Otherwise,
-// this function will return false and |resolved_path| will be the empty string.
-bool ReadSymbolicLink(const std::string& path, std::string* resolved_path);
-
 // Returns the real path for the given path by unwinding symbolic links and
 // directory traversals.
 std::string GetAbsoluteFilePath(const std::string& path);

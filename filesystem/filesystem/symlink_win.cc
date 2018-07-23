@@ -13,33 +13,24 @@
 
 namespace filesystem {
 
-struct UniqueHandleTraits {
-  static HANDLE InvalidValue() { return INVALID_HANDLE_VALUE; }
-  static bool IsValid(HANDLE value) { return value != INVALID_HANDLE_VALUE; }
-  static void Free(HANDLE value) { CloseHandle(value); }
-};
-
-bool ReadSymbolicLink(const std::string& path, std::string* resolved_path) {
-  TONIC_CHECK(false && "Unimplemented function ReadSymbolicLink");
-  return false;
-}
-
 std::string GetAbsoluteFilePath(const std::string& path) {
-  fxl::UniqueObject<HANDLE, UniqueHandleTraits> file(
+  HANDLE file =
       CreateFileA(path.c_str(), FILE_READ_ATTRIBUTES,
                   FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, NULL,
-                  OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL));
-  if (!file.is_valid()) {
+                  OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL);
+  if (file == INVALID_HANDLE_VALUE) {
     return std::string();
   }
   char buffer[MAX_PATH];
   DWORD ret = GetFinalPathNameByHandleA(file.get(), buffer, MAX_PATH,
                                         FILE_NAME_NORMALIZED);
   if (ret == 0 || ret > MAX_PATH) {
+    CloseHandle(file);
     return std::string();
   }
   std::string result(buffer);
   result.erase(0, strlen("\\\\?\\"));
+  CloseHandle(file);
   return result;
 }
 

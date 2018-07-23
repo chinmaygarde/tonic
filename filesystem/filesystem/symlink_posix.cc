@@ -13,23 +13,6 @@
 
 namespace filesystem {
 
-bool ReadSymbolicLink(const std::string& path, std::string* resolved_path) {
-  if (path.empty() || resolved_path == nullptr) {
-    return false;
-  }
-
-  char buffer[PATH_MAX];
-  ssize_t length = readlink(path.c_str(), buffer, sizeof(buffer));
-
-  if (length <= 0) {
-    resolved_path->clear();
-    return false;
-  }
-
-  *resolved_path = std::string(buffer, length);
-  return true;
-}
-
 std::string GetAbsoluteFilePath(const std::string& path) {
 #if defined(OS_FUCHSIA)
   // realpath() isn't supported by Fuchsia. See MG-425.
