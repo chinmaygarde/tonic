@@ -28,32 +28,4 @@ bool IsDirectory(const std::string& path) {
   return S_ISDIR(buf.st_mode);
 }
 
-bool CreateDirectory(const std::string& full_path) {
-  std::vector<std::string> subpaths;
-
-  // Collect a list of all parent directories.
-  std::string last_path = full_path;
-  subpaths.push_back(full_path);
-  for (std::string path = GetDirectoryName(full_path);
-       !path.empty() && path != last_path; path = GetDirectoryName(path)) {
-    subpaths.push_back(path);
-    last_path = path;
-  }
-
-  // Iterate through the parents and create the missing ones.
-  for (auto it = subpaths.rbegin(); it != subpaths.rend(); ++it) {
-    if (IsDirectory(*it))
-      continue;
-    if (mkdir(it->c_str(), 0700) == 0)
-      continue;
-    // Mkdir failed, but it might be due to the directory appearing out of thin
-    // air. This can occur if two processes are trying to create the same file
-    // system tree at the same time. Check to see if it exists and make sure it
-    // is a directory.
-    if (!IsDirectory(*it))
-      return false;
-  }
-  return true;
-}
-
 }  // namespace filesystem
