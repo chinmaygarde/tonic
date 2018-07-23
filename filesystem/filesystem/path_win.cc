@@ -206,26 +206,4 @@ std::string GetBaseName(const std::string& path) {
   return path.substr(separator + 1);
 }
 
-bool DeletePath(const std::string& path, bool recursive) {
-  // SimplifyPath because SHFileOperation has trouble with double slashes.
-  std::string simple_path = SimplifyPath(path);
-  DWORD ftyp = GetFileAttributesA(simple_path.c_str());
-  if (ftyp == INVALID_FILE_ATTRIBUTES)
-    return false;
-  if (!(ftyp & FILE_ATTRIBUTE_DIRECTORY))
-    return (unlink(simple_path.c_str()) == 0);
-  if (!recursive)
-    return (rmdir(simple_path.c_str()) == 0);
-  SHFILEOPSTRUCTA file_op = {NULL,
-                             FO_DELETE,
-                             simple_path.c_str(),
-                             "",
-                             FOF_NOCONFIRMATION | FOF_NOERRORUI | FOF_SILENT,
-                             false,
-                             0,
-                             ""};
-  int a = SHFileOperationA(&file_op);
-  return (a == 0);
-}
-
 }  // namespace filesystem

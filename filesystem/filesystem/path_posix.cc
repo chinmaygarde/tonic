@@ -32,34 +32,6 @@ size_t ResolveParentDirectoryTraversal(const std::string& path, size_t put) {
   return 0;
 }
 
-void SafeCloseDir(DIR* dir) {
-  if (dir)
-    closedir(dir);
-}
-
-bool ForEachEntry(const std::string& path,
-                  std::function<bool(const std::string& path)> callback) {
-  std::unique_ptr<DIR, decltype(&SafeCloseDir)> dir(opendir(path.c_str()),
-                                                    SafeCloseDir);
-  if (!dir.get())
-    return false;
-  for (struct dirent* entry = readdir(dir.get()); entry != nullptr;
-       entry = readdir(dir.get())) {
-    char* name = entry->d_name;
-    if (name[0]) {
-      if (name[0] == '.') {
-        if (!name[1] || (name[1] == '.' && !name[2])) {
-          // . or ..
-          continue;
-        }
-      }
-      if (!callback(path + "/" + name))
-        return false;
-    }
-  }
-  return true;
-}
-
 }  // namespace
 
 std::string SimplifyPath(std::string path) {
@@ -188,39 +160,6 @@ std::string GetBaseName(const std::string& path) {
   if (separator == std::string::npos)
     return path;
   return path.substr(separator + 1);
-}
-
-bool DeletePath(const std::string& path, bool recursive) {
-  struct stat stat_buffer;
-  if (lstat(path.c_str(), &stat_buffer) != 0)
-    return (errno == ENOENT || errno == ENOTDIR);
-  if (!S_ISDIR(stat_buffer.st_mode))
-    return (unlink(path.c_str()) == 0);
-  if (!recursive)
-    return (rmdir(path.c_str()) == 0);
-
-  // Use std::list, as ForEachEntry callback will modify the container. If the
-  // container is a vector, this will invalidate the reference to the content.
-  std::list<std::string> directories;
-  directories.push_back(path);
-  for (auto it = directories.begin(); it != directories.end(); ++it) {
-    if (!ForEachEntry(*it, [&directories](const std::string& child) {
-          if (IsDirectory(child)) {
-            directories.push_back(child);
-          } else {
-            if (unlink(child.c_str()) != 0)
-              return false;
-          }
-          return true;
-        })) {
-      return false;
-    }
-  }
-  for (auto it = directories.rbegin(); it != directories.rend(); ++it) {
-    if (rmdir(it->c_str()) != 0)
-      return false;
-  }
-  return true;
 }
 
 }  // namespace filesystem
