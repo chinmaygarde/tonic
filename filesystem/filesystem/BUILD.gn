@@ -16,8 +16,6 @@ source_set("filesystem") {
   configs += [ "../../:config" ]
 
   sources = [
-    "directory.cc",
-    "directory.h",
     "eintr_wrapper.h",
     "file.cc",
     "file.h",

@@ -16,7 +16,6 @@
 #include <list>
 #include <memory>
 
-#include "filesystem/directory.h"
 #include "filesystem/portable_unistd.h"
 #include "tonic/common/build_config.h"
 
@@ -33,6 +32,14 @@ size_t ResolveParentDirectoryTraversal(const std::string& path, size_t put) {
     return put;
   }
   return 0;
+}
+
+std::string GetCurrentDirectory() {
+  char buffer[PATH_MAX];
+  if (getcwd(buffer, sizeof(buffer)) == NULL) {
+    return {};
+  }
+  return std::string(buffer);
 }
 
 }  // namespace

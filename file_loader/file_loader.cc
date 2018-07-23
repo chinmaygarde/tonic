@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "filesystem/directory.h"
 #include "filesystem/file.h"
 #include "filesystem/path.h"
 #include "filesystem/portable_unistd.h"

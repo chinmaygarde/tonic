@@ -5,7 +5,6 @@
 #include "filesystem/path.h"
 
 #include <windows.h>
-#undef GetCurrentDirectory
 
 #include <direct.h>
 #include <errno.h>
@@ -18,8 +17,6 @@
 #include <functional>
 #include <list>
 #include <memory>
-
-#include "filesystem/directory.h"
 
 namespace filesystem {
 namespace {
