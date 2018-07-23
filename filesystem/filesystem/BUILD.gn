@@ -41,5 +41,9 @@ source_set("filesystem") {
     ]
   }
 
+  deps = [
+    "../../common",
+  ]
+
   public_configs = [ ":filesystem_config" ]
 }

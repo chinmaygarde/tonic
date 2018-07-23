@@ -9,6 +9,8 @@
 
 #include <iostream>
 
+#include "tonic/common/macros.h"
+
 namespace filesystem {
 
 struct UniqueHandleTraits {
@@ -18,7 +20,7 @@ struct UniqueHandleTraits {
 };
 
 bool ReadSymbolicLink(const std::string& path, std::string* resolved_path) {
-  FXL_CHECK(false) << "Unimplemented";
+  TONIC_CHECK(false && "Unimplemented function ReadSymbolicLink");
   return false;
 }
 
