@@ -87,19 +87,4 @@ std::pair<uint8_t*, intptr_t> ReadFileToBytes(const std::string& path) {
   return ReadFileDescriptorToBytes(fd.get());
 }
 
-bool IsFile(const std::string& path) {
-  struct stat buf;
-  if (stat(path.c_str(), &buf) != 0)
-    return false;
-  return S_ISREG(buf.st_mode);
-}
-
-bool GetFileSize(const std::string& path, uint64_t* size) {
-  struct stat stat_buffer;
-  if (stat(path.c_str(), &stat_buffer) != 0)
-    return false;
-  *size = stat_buffer.st_size;
-  return true;
-}
-
 }  // namespace filesystem

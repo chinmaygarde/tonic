@@ -23,12 +23,6 @@ bool ReadFileToString(const std::string& path, std::string* result);
 // pair of <nullptr, -1> if read failed.
 std::pair<uint8_t*, intptr_t> ReadFileToBytes(const std::string& path);
 
-// Returns whether the given path is a file.
-bool IsFile(const std::string& path);
-
-// If the given path is a file, set size to the size of the file.
-bool GetFileSize(const std::string& path, uint64_t* size);
-
 }  // namespace filesystem
 
 #endif  // FILESYSTEM_FILE_H_
