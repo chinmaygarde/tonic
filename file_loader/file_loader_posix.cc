@@ -11,7 +11,6 @@
 #include "filesystem/directory.h"
 #include "filesystem/file.h"
 #include "filesystem/path.h"
-#include "filesystem/symlink.h"
 #include "tonic/common/macros.h"
 #include "tonic/converter/dart_converter.h"
 #include "tonic/parsers/packages_map.h"

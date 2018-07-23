@@ -24,6 +24,10 @@ std::string GetDirectoryName(const std::string& path);
 // to and including the last slash.
 std::string GetBaseName(const std::string& path);
 
+// Returns the real path for the given path by unwinding symbolic links and
+// directory traversals.
+std::string GetAbsoluteFilePath(const std::string& path);
+
 }  // namespace filesystem
 
 #endif  // FILESYSTEM_PATH_H_

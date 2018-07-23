@@ -26,19 +26,12 @@ source_set("filesystem") {
     "inttypes.h",
     "path.h",
     "portable_unistd.h",
-    "symlink.h",
   ]
 
   if (is_win) {
-    sources += [
-      "path_win.cc",
-      "symlink_win.cc",
-    ]
+    sources += [ "path_win.cc" ]
   } else {
-    sources += [
-      "path_posix.cc",
-      "symlink_posix.cc",
-    ]
+    sources += [ "path_posix.cc" ]
   }
 
   deps = [

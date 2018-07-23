@@ -6,6 +6,7 @@
 
 #include <dirent.h>
 #include <errno.h>
+#include <limits.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -16,6 +17,8 @@
 #include <memory>
 
 #include "filesystem/directory.h"
+#include "filesystem/portable_unistd.h"
+#include "tonic/common/build_config.h"
 
 namespace filesystem {
 namespace {
@@ -160,6 +163,18 @@ std::string GetBaseName(const std::string& path) {
   if (separator == std::string::npos)
     return path;
   return path.substr(separator + 1);
+}
+
+std::string GetAbsoluteFilePath(const std::string& path) {
+#if defined(OS_FUCHSIA)
+  // realpath() isn't supported by Fuchsia. See MG-425.
+  return SimplifyPath(AbsolutePath(path));
+#else
+  char buffer[PATH_MAX];
+  if (realpath(path.c_str(), buffer) == nullptr)
+    return std::string();
+  return buffer;
+#endif  // defined(OS_FUCHSIA)
 }
 
 }  // namespace filesystem
