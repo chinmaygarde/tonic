@@ -13,6 +13,8 @@ config("filesystem_config") {
 source_set("filesystem") {
   visibility = [ "../*" ]
 
+  configs += [ "../../:config" ]
+
   sources = [
     "directory.cc",
     "directory.h",

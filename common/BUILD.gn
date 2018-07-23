@@ -5,7 +5,7 @@
 source_set("common") {
   visibility = [ "../*" ]
 
-  configs += [ "../:config" ]
+  public_configs = [ "../:config" ]
 
   sources = [
     "build_config.h",
