@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "filesystem/eintr_wrapper.h"
-#include "filesystem/inttypes.h"
 #include "filesystem/portable_unistd.h"
 
 namespace filesystem {

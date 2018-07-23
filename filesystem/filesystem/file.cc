@@ -6,12 +6,20 @@
 
 #include <fcntl.h>
 #include <limits.h>
+#include <stdint.h>
 #include <sys/stat.h>
+
+#include "tonic/common/build_config.h"
 
 #if defined(OS_WIN)
 #define BINARY_MODE _O_BINARY
 #else
 #define BINARY_MODE 0
+#endif
+
+#if defined(OS_WIN)
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
 #endif
 
 #include "filesystem/eintr_wrapper.h"

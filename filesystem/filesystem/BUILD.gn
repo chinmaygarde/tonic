@@ -19,7 +19,6 @@ source_set("filesystem") {
     "eintr_wrapper.h",
     "file.cc",
     "file.h",
-    "inttypes.h",
     "path.h",
     "portable_unistd.h",
   ]
