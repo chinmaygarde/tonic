@@ -21,11 +21,4 @@ std::string GetCurrentDirectory() {
   return std::string(buffer);
 }
 
-bool IsDirectory(const std::string& path) {
-  struct stat buf;
-  if (stat(path.c_str(), &buf) != 0)
-    return false;
-  return S_ISDIR(buf.st_mode);
-}
-
 }  // namespace filesystem
