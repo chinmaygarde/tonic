@@ -5,9 +5,9 @@
 #ifndef FILESYSTEM_FILE_DESCRIPTOR_H_
 #define FILESYSTEM_FILE_DESCRIPTOR_H_
 
-#include <unistd.h>
-
 #include "filesystem/eintr_wrapper.h"
+#include "filesystem/portable_unistd.h"
+#include "tonic/common/build_config.h"
 
 namespace filesystem {
 
