@@ -8,6 +8,7 @@ source_set("common") {
   configs += [ "../:config" ]
 
   sources = [
+    "build_config.h",
     "macros.h",
   ]
 }
